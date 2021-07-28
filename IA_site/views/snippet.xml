@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    <gamma_template id="snippet_testimonial" name="Testimonial snippet">-->
+<!--        <section class="snippet_testimonial">-->
+<!--            <div class="container text-center">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-4">-->
+<!--                        &lt;!&ndash;                        <img alt="client" class="rounded-circle" src="/theme_tutorial/static/src/img/client_1.jpg"/>&ndash;&gt;-->
+<!--                        <h3>Client Name</h3>-->
+<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4">-->
+<!--                        &lt;!&ndash;                        <img alt="client" class="rounded-circle" src="/theme_tutorial/static/src/img/client_2.jpg"/>&ndash;&gt;-->
+<!--                        <h3>Client Name</h3>-->
+<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+<!--                    </div>-->
+<!--                    <div class="col-lg-4">-->
+<!--                        &lt;!&ndash;                        <img alt="client" class="rounded-circle" src="/theme_tutorial/static/src/img/client_3.jpg"/>&ndash;&gt;-->
+<!--                        <h3>Client Name</h3>-->
+<!--                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </section>-->
+<!--    </gamma_template>-->
+<!--    <gamma_template id="place_into_bar" inherit_id="website.snippets" name="Place into bar">-->
+<!--        <xpath expr="//div[@id='snippet_feature']/div[@class='o_panel_body']" position="inside">-->
+<!--            <t t-snippet="IA_site.snippet_testimonial"-->
+<!--            />-->
+<!--        </xpath>-->
+<!--    </gamma_template>-->
+<!--    <gamma_template id="s_blog_video" name="Blog Video">-->
+<!--        <section class="video-wrapper">-->
+<!--            <div id="video-carousel-example2" class="carousel slide carousel-fade" data-ride="carousel">-->
+
+<!--                <div class="video-background">-->
+<!--                    <div class="video-wrap">-->
+<!--                        <div id="video">-->
+
+
+<!--                            &lt;!&ndash;                            <iframe allowfullscreen="" frameborder="0" height="315"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    src="IA_site\static\scss\vedio\vedio.mp4"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    id="bgvid" type="video/mp4"&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                    width="560"></iframe>&ndash;&gt;-->
+<!--                            <video playsinline="true" autoplay="true" muted="true" loop="true" id="bgvid"-->
+<!--                                   class="bckgroundMyVideo" preload="auto">-->
+<!--                                <source src="IA_site\static\scss\vedio\vedio.mp4" type="video/mp4"/>-->
+
+<!--                            </video>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--        </section>-->
+<!--    </gamma_template>-->
+<!--    <gamma_template id="s_blog_txts" name="txts Video">-->
+<!--        <section class="categories">-->
+<!--            <div class="m-5 pb-5">-->
+
+<!--                <div class="small-container">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-4">-->
+<!--                            <img src="/IA_site/static/scss/image/image.jpg"/>-->
+
+<!--                        </div>-->
+<!--                        <div class="col-md-4">-->
+<!--                            <img src="/IA_site/static/scss/image/images2.jpg"/>-->
+
+<!--                        </div>-->
+<!--                        <div class="col-md-4">-->
+<!--                            <img src="/IA_site/static/scss/image/image3.jpg"/>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+<!--        </section>-->
+<!--    </gamma_template>-->
+<!--    <gamma_template id="snippets_content" inherit_id="website.snippets">-->
+<!--        <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">-->
+
+<!--            <t t-snippet="IA_site.s_blog_video"/>-->
+
+<!--        </xpath>-->
+<!--    </gamma_template>-->
+<!--    <gamma_template id="snippets_content2" inherit_id="website.snippets">-->
+<!--        <xpath expr="//div[@id='snippet_structure']/div[@class='o_panel_body']" position="inside">-->
+
+<!--            <t t-snippet="IA_site.s_blog_txts"/>-->
+
+<!--        </xpath>-->
+<!--    </gamma_template>-->
+<!--    <gamma_template id="assets_frontend" name="My style" inherit_id="website.assets_frontend">-->
+<!--        <xpath expr="link[last()]" position="after">-->
+<!--            <link rel="stylesheet" type="text/scss" href="/IA_site/static/scss/style.scss"/>-->
+<!--            <script type="text/javascript" src="/website_sale/static/scss/view_quitse.js"></script>-->
+<!--        </xpath>-->
+<!--    </gamma_template>-->
+
+    <template id="replace_pricelist_list" inherit_id="website_sale.pricelist_list" name="pricelist_list">
+        <xpath expr="//div" position="replace">
+
+            <t t-set="curr_pl" t-value="website.get_current_pricelist()"/>
+            <a role="button" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                <t t-esc="curr_pl and curr_pl.name or ' - '"/>
+            </a>
+            <div class="dropdown-menu" role="menu">
+                <t t-foreach="website_sale_pricelists" t-as="pl">
+                    <a role="menuitem" t-att-href="'/shop/change_pricelist/%s' % pl.id" class="dropdown-item">
+                        <span class="switcher_pricelist" t-att-data-pl_id="pl.id" t-esc="pl.name"/>
+                    </a>
+                </t>
+            </div>
+
+        </xpath>
+    </template>
+
+    <template id="replace_sherch2" inherit_id="website_sale.products" name="sherch">
+        <xpath expr="//div[@class='products_pager form-inline flex-md-nowrap justify-content-between justify-content-md-center']"
+               position="replace">
+            <div class="container center row" style="margin-left: auto;margin-right: auto;">
+
+                <div class="col">
+
+
+                </div>
+                <div class="col">
+
+
+                    <t t-call="website_sale.search">
+                        <t t-set="_classes" t-valuef="w-100 w-md-auto mt-2"/>
+                    </t>
+                </div>
+                <div class="col">
+                    <div style="text-align: right;">
+                        <div class="btn-group btn-group-toggle mt-2 ml-md-2 d-none d-sm-inline-flex o_wsale_apply_layout"
+                             data-toggle="buttons">
+                            <label t-attf-class="btn btn-outline-info #{'active' if layout_mode != 'list' else None} fa fa-th-large o_wsale_apply_grid"
+                                   title="Grid">
+                                <input type="radio" name="wsale_products_layout"
+                                       t-att-checked="'checked' if layout_mode != 'list' else None"/>
+                            </label>
+                            <label t-attf-class="btn btn-outline-info #{'active' if layout_mode == 'list' else None} fa fa-th-list o_wsale_apply_list"
+                                   title="List">
+                                <input type="radio" name="wsale_products_layout"
+                                       t-att-checked="'checked' if layout_mode == 'list' else None"/>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <br/>
+
+            <xpath expr="//div[@id='products_grid_before']" position="before">
+                <button type="button" class="btn btn-link d-lg-none"
+                        data-target="#wsale_products_attributes_collapse" data-toggle="collapse">
+                    Show options
+                </button>
+                <!--            <div class="collapse d-inline" id="wsale_products_attributes_collapse">-->
+                <div id="horizontal_products_attributes" class="col-md-12 mb16">
+                    <form class="js_attributes mb-2" method="get">
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+                            <input t-if="category" type="hidden" name="category" t-att-value="category.id"/>
+                            <input type="hidden" name="search" t-att-value="search"/>
+                            <div class="collapse navbar-collapse horizontal_products_attributes">
+                                <ul class="navbar-nav mr-auto">
+                                    <t t-foreach="attributes" t-as="a">
+                                        <li t-if="a.value_ids and len(a.value_ids) &gt; 1" class="nav-item dropdown">
+
+                                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <strong t-field="a.name"/>
+                                            </a>
+
+
+                                            <t>
+                                                <ul class="dropdown-menu " name="attrib">
+                                                    <option value=""/>
+                                                    <t t-foreach="a.value_ids" t-as="v">
+                                                        <option t-att-value="'%s-%s' % (a.id,v.id)" t-esc="v.name"
+                                                                style="padding:0;" class=" dropdown-item"
+                                                                t-att-selected="v.id in attrib_set"/>
+                                                    </t>
+                                                </ul>
+                                            </t>
+                                            <t t-if="a.display_type == 'radio'">
+                                                <ul class="dropdown-menu  ">
+                                                    <t t-foreach="a.value_ids" t-as="v">
+                                                        <li style="padding:0;" class=" dropdown-item">
+                                                            <label style="padding: 0; margin: 0"
+                                                                   t-attf-class="nav-link#{' active' if v.id in attrib_set else ''}">
+                                                                <input type="checkbox" name="attrib"
+                                                                       t-att-value="'%s-%s' % (a.id,v.id)"
+                                                                       t-att-checked="'checked' if v.id in attrib_set else None"/>
+                                                                <span style="font-weight: normal" t-field="v.name"/>
+                                                            </label>
+                                                        </li>
+                                                    </t>
+                                                </ul>
+                                            </t>
+                                            <t t-if="a.display_type == 'color'">
+                                                <div class="dropdown-menu">
+                                                    <t t-foreach="a.value_ids" t-as="v">
+                                                        <div class="dropdown-item">
+                                                            <label t-attf-style="background-color:#{v.html_color or v.name}"
+                                                                   t-attf-class="css_attribute_color #{'active' if v.id in attrib_set else ''}">
+                                                                <input type="checkbox" name="attrib"
+                                                                       t-att-value="'%s-%s' % (a.id,v.id)"
+                                                                       t-att-checked="'checked' if v.id in attrib_set else None"
+                                                                       t-att-title="v.name"/>
+                                                            </label>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </t>
+                                        </li>
+                                    </t>
+                                </ul>
+                                <t t-set="list_price_desc_label">Catalog price: High to Low</t>
+                                <t t-set="list_price_asc_label">Catalog price: Low to High</t>
+                                <t t-set="name_asc_label">Name: A to Z</t>
+                                <t t-set="name_desc_label">Name: Z to A</t>
+                                <t t-set="website_sale_sortable" t-value="[
+                (list_price_desc_label, 'list_price desc'),
+                (list_price_asc_label, 'list_price asc'),
+                (name_asc_label, 'name asc'),
+                (name_desc_label, 'name desc')
+            ]"/>
+                                <t t-set="website_sale_sortable_current"
+                                   t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
+
+                                <ul class="navbar-nav ">
+                                    <li class="nav-item dropdown mt-2 ml-md-2 dropdown_sorty_by">
+                                        <a role="button" href="#" class="nav-link dropdown-toggle"
+                                           data-toggle="dropdown">
+                                            <span class="d-none d-lg-inline">
+                                                <t t-if='len(website_sale_sortable_current)'>
+                                                    Sorting by :
+                                                    <t t-raw='website_sale_sortable_current[0][0]'/>
+                                                </t>
+                                                <t t-else='1'>
+                                                    Sort by
+                                                </t>
+                                            </span>
+                                            <i class="fa fa-sort-amount-asc d-lg-none"/>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                            <t t-foreach="website_sale_sortable" t-as="sortby">
+                                                <a role="menuitem" rel="noindex,nofollow"
+                                                   t-att-href="keep('/shop', order=sortby[1])"
+                                                   class="dropdown-item">
+                                                    <span t-raw="sortby[0]"/>
+                                                </a>
+                                            </t>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </nav>
+                    </form>
+                </div>
+            </xpath>
+
+        </xpath>
+
+    </template>
+
+<!--    &lt;!&ndash;    <gamma_template id="option_collapse_categories_recursive" name="Collapse Category Recursive">&ndash;&gt;-->
+<!--    &lt;!&ndash;        <li class="nav-item">&ndash;&gt;-->
+<!--    &lt;!&ndash;            <t t-set="children"&ndash;&gt;-->
+<!--    &lt;!&ndash;               t-value="not search and c.child_id or c.child_id.filtered(lambda c: c.id in search_categories_ids)"/>&ndash;&gt;-->
+<!--    &lt;!&ndash;            <i t-if="children"&ndash;&gt;-->
+<!--    &lt;!&ndash;               t-attf-class="text-primary fa #{'fa-chevron-down' if c.id in category.parents_and_self.ids else 'fa-chevron-right'}"&ndash;&gt;-->
+<!--    &lt;!&ndash;               t-attf-title="#{'Unfold' if c.id in category.parents_and_self.ids else 'Fold'}"&ndash;&gt;-->
+<!--    &lt;!&ndash;               t-attf-aria-label="#{'Unfold' if c.id in category.parents_and_self.ids else 'Fold'}" role="img"/>&ndash;&gt;-->
+<!--    &lt;!&ndash;            <a t-att-href="keep('/shop/category/' + slug(c), category=0)"&ndash;&gt;-->
+<!--    &lt;!&ndash;               t-attf-class="nav-link #{'active' if c.id == category.id else ''}" t-field="c.name"></a>&ndash;&gt;-->
+<!--    &lt;!&ndash;            <ul t-if="children" class="nav nav-pills flex-column nav-hierarchy"&ndash;&gt;-->
+<!--    &lt;!&ndash;                t-att-style="'display:block;' if c.id in category.parents_and_self.ids else 'display:none;'">&ndash;&gt;-->
+<!--    &lt;!&ndash;                <t t-foreach="children" t-as="c">&ndash;&gt;-->
+<!--    &lt;!&ndash;                    <t t-call="website_sale.option_collapse_categories_recursive"/>&ndash;&gt;-->
+<!--    &lt;!&ndash;                </t>&ndash;&gt;-->
+<!--    &lt;!&ndash;            </ul>&ndash;&gt;-->
+<!--    &lt;!&ndash;        </li>&ndash;&gt;-->
+<!--    &lt;!&ndash;    </gamma_template>&ndash;&gt;-->
+<!--    <gamma_template id="replace_main_cat" inherit_id="website_sale.products" name="main1">-->
+<!--        <xpath expr="//div[@id='products_grid_before']" position="before">-->
+<!--            <t t-set="enable_left_column" t-value="True"/>-->
+<!--        </xpath>-->
+<!--        &lt;!&ndash;        <xpath expr="//t[@t-call='website_sale.categories_recursive']" position="attributes">&ndash;&gt;-->
+<!--        &lt;!&ndash;            <attribute name="t-call">website_sale.option_collapse_categories_recursive</attribute>&ndash;&gt;-->
+<!--        &lt;!&ndash;        </xpath>&ndash;&gt;-->
+
+<!--        <xpath expr="//div[@id='products_grid_before']" position="inside">-->
+<!--            <button type="button" class="btn btn-link d-lg-none"-->
+<!--                    data-target="wsale_products_categories_collapse" data-toggle="collapse">-->
+<!--                Show categories-->
+<!--            </button>-->
+<!--            <div class="collapse d-lg-block border" id="wsale_products_categories_collapse">-->
+<!--                <ul class="nav nav-tabs flex-column mb-2" style="box-shadow: 10px 10px 5px grey;">-->
+<!--                    <li class="nav-item ">-->
+<!--                        <a t-att-href="keep('/shop', category=0)"-->
+<!--                           t-attf-class="nav-link #{'' if category else 'active'} o_not_editable">All-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <t t-foreach="categories" t-as="c">-->
+<!--                        <t t-call="website_sale.categories_recursive"/>-->
+<!--                    </t>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </xpath>-->
+
+
+<!--    </gamma_template>-->
+    <template id="option_collapse_categories_recursive_test"
+              inherit_id="website_sale.option_collapse_categories_recursive" name="tset">
+        <xpath expr="//li[@class='nav-item']" position="replace">
+            <t t-set="children"
+               t-value="not search and c.child_id or c.child_id.filtered(lambda c: c.id in search_categories_ids)"/>
+            <i t-if="children"
+               t-attf-class="text-primary fa #{'fa-chevron-down' if c.id in category.parents_and_self.ids else 'fa-chevron-right'}"
+               t-attf-title="#{'Unfold' if c.id in category.parents_and_self.ids else 'Fold'}"
+               t-attf-aria-label="#{'Unfold' if c.id in category.parents_and_self.ids else 'Fold'}" role="img"/>
+            <a t-att-href="keep('/shop/category/' + slug(c), category=0)"
+               t-attf-class="nav-link #{'active' if c.id == category.id else ''}" t-field="c.name"></a>
+            <ul t-if="children" class="nav nav-pills flex-column nav-hierarchy"
+                t-att-style="'display:block;' if c.id in category.parents_and_self.ids else 'display:none;'">
+                <t t-foreach="children" t-as="c">
+                    <t t-call="website_sale.option_collapse_categories_recursive"/>
+                </t>
+            </ul>
+
+
+        </xpath>
+
+    </template>
+
+<!--    <gamma_template id="replace_produit" inherit_id="website_sale.products" name="produit">-->
+
+<!--        <xpath expr="//div[@class='products_pager form-inline justify-content-center py-3']" position="replace">-->
+<!--            <t t-call="website.pager" >-->
+<!--                <t t-set="_classes" t-valuef="mt-2 ml-md-2"/>-->
+<!--            </t>-->
+
+
+<!--        </xpath>-->
+
+
+<!--    </gamma_template>-->
+<!--    &lt;!&ndash;    <gamma_template id="categories_recursive" name="Category list">&ndash;&gt;-->
+<!--    &lt;!&ndash;        <li class="nav-item">&ndash;&gt;-->
+<!--    &lt;!&ndash;            <a t-att-href="keep('/shop/category/' + slug(c), category=0)"&ndash;&gt;-->
+<!--    &lt;!&ndash;               t-attf-class="nav-link #{'active' if c.id == category.id else ''}">&ndash;&gt;-->
+<!--    &lt;!&ndash;                <span t-field="c.name"/>&ndash;&gt;-->
+<!--    &lt;!&ndash;            </a>&ndash;&gt;-->
+<!--    &lt;!&ndash;            <ul t-if="c.child_id" class="nav nav-pills flex-column nav-hierarchy">&ndash;&gt;-->
+<!--    &lt;!&ndash;                <t t-foreach="c.child_id" t-as="c">&ndash;&gt;-->
+<!--    &lt;!&ndash;                    <t t-if="not search or c.id in search_categories_ids">&ndash;&gt;-->
+<!--    &lt;!&ndash;                        <t t-call="website_sale.categories_recursive"/>&ndash;&gt;-->
+<!--    &lt;!&ndash;                    </t>&ndash;&gt;-->
+<!--    &lt;!&ndash;                </t>&ndash;&gt;-->
+<!--    &lt;!&ndash;            </ul>&ndash;&gt;-->
+<!--    &lt;!&ndash;        </li>&ndash;&gt;-->
+<!--    &lt;!&ndash;    </gamma_template>&ndash;&gt;-->
+
+    <template id="replace_test" inherit_id="website_sale.categories_recursive" name="main3 ">
+        <xpath expr="//li" position="replace">
+            <a t-att-href="keep('/shop/category/' + slug(c), category=0)"
+               t-attf-class="nav-link #{'active' if c.id == category.id else ''}">
+                <span t-field="c.name"/>
+            </a>
+            <ul t-if="c.child_id" class="nav nav-pills flex-column nav-hierarchy">
+                <t t-foreach="c.child_id" t-as="c">
+                    <t t-if="not search or c.id in search_categories_ids">
+                        <t t-call="website_sale.categories_recursive"/>
+                    </t>
+                </t>
+            </ul>
+
+
+        </xpath>
+    </template>
+</odoo>

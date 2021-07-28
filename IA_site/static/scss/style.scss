@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+.tele{
+ color : red;
+ font-size : 50%;
+ padding-left :0px;
+
+}
+
+body {
+  margin: 0;
+  font-family: Arial;
+  font-size: 17px;
+}
+
+.product_view .modal-dialog{max-width: 800px; width: 100%;}
+.pre-cost{text-decoration: line-through; color: #a5a5a5;}
+.space-ten{padding: 10px 0;}
+.rating.hidden-sm.rating_ext > .price-text-color.fa-star {
+    color: #fcc500;
+}
+.rating.hidden-sm.rating_ext > .fa-star{
+    color: #dddddb;
+}
+
+
+#myVideo {
+  position: relative;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fix :cover;
+}
+h1{
+ font-size:150%;
+}
+.video-background{
+
+   position:relative;
+   width:100%;
+   min-height :100vh;
+
+}
+.categorie{
+  margin :70px 0;
+  padding-to
+
+}
+.col-3{
+
+  flex-basis: 30%:
+  min-width 25px;
+  margin-bottom:30px;
+
+}
+
+.col-3 img{
+  width :200%;
+  padding :100px
+}
+.small-container{
+
+  max-width : 1080px;
+  margin : 1000px;
+  padding-left :25px;
+  padding-right :25px;
+
+
+}

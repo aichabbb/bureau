@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="products_add_to_cart" inherit_id="website_sale.products_item" name="Add to Cart">
+        <xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">
+            <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+            <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
+            <t t-if="product_variant_id">
+                <a href="#" role="button" class="btn btn-secondary a-submit" aria-label="Shopping cart"
+                   title="Shopping cart">
+                    <span class="fa fa-shopping-cart"/>
+                </a>
+            </t>
+        </xpath>
+    </template>
+    <template id="option_collapse_categories_recursive" name="Collapse Category Recursive">
+        <li class="nav-item">
+            <t t-set="children"
+               t-value="not search and c.child_id or c.child_id.filtered(lambda c: c.id in search_categories_ids)"/>
+            <i t-if="children"
+               t-attf-class="text-primary fa #{'fa-chevron-down' if c.id in category.parents_and_self.ids else 'fa-chevron-right'}"
+               t-attf-title="#{'Unfold' if c.id in category.parents_and_self.ids else 'Fold'}"
+               t-attf-aria-label="#{'Unfold' if c.id in category.parents_and_self.ids else 'Fold'}" role="img"/>
+            <a t-att-href="keep('/shop/category/' + slug(c), category=0)"
+               t-attf-class="nav-link #{'active' if c.id == category.id else ''}" t-field="c.name"></a>
+            <ul t-if="children" class="nav nav-pills flex-column nav-hierarchy"
+                t-att-style="'display:block;' if c.id in category.parents_and_self.ids else 'display:none;'">
+                <t t-foreach="children" t-as="c">
+                    <t t-call="website_sale.option_collapse_categories_recursive"/>
+                </t>
+            </ul>
+        </li>
+    </template>
+
+
+<!--    <gamma_template id="products_attributes" inherit_id="website_sale.products"-->
+<!--              name="Product Attribute's Filters">-->
+<!--        <xpath expr="//div[@id='products_grid_before']" position="before">-->
+<!--            <t t-set="enable_left_column" t-value="True"/>-->
+<!--        </xpath>-->
+<!--        &lt;!&ndash;        <xpath expr="//div[@id='products_grid_before']" position="before">&ndash;&gt;-->
+<!--        &lt;!&ndash;            <button type="button" class="btn btn-link d-lg-none"&ndash;&gt;-->
+<!--        &lt;!&ndash;                    data-target="#wsale_products_attributes_collapse" data-toggle="collapse">&ndash;&gt;-->
+<!--        &lt;!&ndash;                Show options&ndash;&gt;-->
+<!--        &lt;!&ndash;            </button>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <div class="collapse d-inline" id="wsale_products_attributes_collapse">&ndash;&gt;-->
+<!--        &lt;!&ndash;                <form class="js_attributes mb-2" method="get">&ndash;&gt;-->
+<!--        &lt;!&ndash;                    <nav class="navbar navbar-expand-lg navbar-light bg-light">&ndash;&gt;-->
+
+<!--        &lt;!&ndash;                    <input t-if="category" type="hidden" name="category" t-att-value="category.id"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                    <input type="hidden" name="search" t-att-value="search"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                    <ul class="navbar-nav mr-auto">&ndash;&gt;-->
+<!--        &lt;!&ndash;                        <t t-foreach="attributes" t-as="a">&ndash;&gt;-->
+<!--        &lt;!&ndash;                            <li t-if="a.value_ids and len(a.value_ids) &gt; 1" class="nav-item dropdown">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                <div>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" >&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <strong t-field="a.name" /></a>&ndash;&gt;-->
+
+<!--        &lt;!&ndash;                                </div>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                <t t-if="a.display_type == 'select'">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <select class="form-control" name="attrib">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                        <option value=""/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                        <t t-foreach="a.value_ids" t-as="v">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                            <option t-att-value="'%s-%s' % (a.id,v.id)" t-esc="v.name"&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                    t-att-selected="v.id in attrib_set"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                        </t>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    </select>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                </t>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                <t t-if="a.display_type == 'radio'">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <ul class="nav nav-pills flex-column">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                        <t t-foreach="a.value_ids" t-as="v">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                            <li class="nav-item">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                <label style="padding: 0; margin: 0"&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                       t-attf-class="nav-link#{' active' if v.id in attrib_set else ''}">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                    <input type="checkbox" name="attrib"&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                           t-att-value="'%s-%s' % (a.id,v.id)"&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                           t-att-checked="'checked' if v.id in attrib_set else None"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                    <span style="font-weight: normal" t-field="v.name"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                </label>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                            </li>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                        </t>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    </ul>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                </t>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                <t t-if="a.display_type == 'color'">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    <t t-foreach="a.value_ids" t-as="v">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                        <label t-attf-style="background-color:#{v.html_color or v.name}"&ndash;&gt;-->
+<!--        &lt;!&ndash;                                               t-attf-class="css_attribute_color #{'active' if v.id in attrib_set else ''}">&ndash;&gt;-->
+<!--        &lt;!&ndash;                                            <input type="checkbox" name="attrib" t-att-value="'%s-%s' % (a.id,v.id)"&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                   t-att-checked="'checked' if v.id in attrib_set else None"&ndash;&gt;-->
+<!--        &lt;!&ndash;                                                   t-att-title="v.name"/>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                        </label>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                    </t>&ndash;&gt;-->
+<!--        &lt;!&ndash;                                </t>&ndash;&gt;-->
+<!--        &lt;!&ndash;                            </li>&ndash;&gt;-->
+<!--        &lt;!&ndash;                        </t>&ndash;&gt;-->
+<!--        &lt;!&ndash;                    </ul>&ndash;&gt;-->
+<!--        &lt;!&ndash;                    </nav>&ndash;&gt;-->
+<!--        &lt;!&ndash;                </form>&ndash;&gt;-->
+<!--        &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--        &lt;!&ndash;        </xpath>&ndash;&gt;-->
+<!--    </gamma_template>-->
+
+<!--    <gamma_template id="assets_backend" inherit_id="web.assets_backend">-->
+<!--        <xpath expr="." position="inside">-->
+<!--          <script type="text/javascript" src="/website_sale/static/scss/view_quitse.js"></script>-->
+<!--        </xpath>-->
+<!--    </gamma_template>-->
+     <template id="product_extended_view" inherit_id="website_sale.products">
+        <xpath expr="//t[@t-call='website.layout']" position="inside">
+            <t t-foreach="products" t-as="product">
+                <div class="modal fade product_view" t-att-id="'product_view'+str(product.id)">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a href="#" data-dismiss="modal" class="class pull-right"><span class="fa fa-close"></span></a>
+                            <h3 class="modal-title"><span t-field="product.name"/></h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6 product_img">
+<!--                                      <img t-att-src="'data:image/png;base64,'+product.image if product.image else ''"-->
+<!--                                         class="img-responsive" />-->
+                                </div>
+                                <div class="col-md-6 product_content">
+                                    <div class="col-sm-12 col-lg-12" id="product_details">
+<!--                                        <h4>Product Id: <span t-esc="product.default_code"></span></h4><br/>-->
+                                        <div class="rating hidden-sm rating_ext">
+                                        <t t-set="rating" t-value="0"/>
+                                        <t t-set="count" t-value="0"/>
+                                        <t t-foreach="request.env['rating.rating'].sudo().search([('res_id', '=', product.id)])" t-as="r">
+                                            <t t-set="rating" t-value="rating + r.rating"/>
+                                            <t t-set="count" t-value="count + 1"/>
+                                        </t>
+                                        <i t-att-class="'fa fa-star' + ' price-text-color' if rating and rating/count > 0 else 'fa fa-star'"/>
+                                        <i t-att-class="'fa fa-star' + ' price-text-color' if rating and rating/count > 1 else 'fa fa-star'"/>
+                                        <i t-att-class="'fa fa-star' + ' price-text-color' if rating and rating/count > 2 else 'fa fa-star'"/>
+                                        <i t-att-class="'fa fa-star' + ' price-text-color' if rating and rating/count > 3 else 'fa fa-star'"/>
+                                        <i t-att-class="'fa fa-star' + ' price-text-color' if rating and rating/count > 4 else 'fa fa-star'"/>
+                                        </div>
+                                        <h3 itemprop="name" t-field="product.name">Product Name</h3>
+                                        <span itemprop="url" style="display:none;" t-esc="'/shop/product/%s' % slug(product)" />
+<!--                                        <t t-call="website_sale.product_price" />-->
+                                        <p t-if="len(product.product_variant_ids) &gt; 1" class="css_not_available_msg bg-danger" style="padding: 15px;">Product not available</p>
+                                        <a id="add_to_cart" class="btn btn-primary btn-lg mt8 js_check_product a-submit" t-att-href="'/shop/product/%s' % (slug(product))">Add to Cart</a>
+
+<!--                                        <div t-if="product.availability == 'in_stock'" class="alert alert-success">-->
+<!--                                            <span class="fa fa-check" />-->
+<!--                                            <span>In Stock</span>-->
+<!--                                        </div>-->
+<!--                                        <div t-if="product.availability == 'warning'" class="alert alert-warning">-->
+<!--                                            <span class="fa fa-warning" />-->
+<!--                                            <span t-field="product.availability_warning" />-->
+<!--                                        </div>-->
+                                        <hr t-if="product.description_sale" />
+                                        <div>
+                                            <p t-field="product.description_sale" class="text-muted" />
+                                        </div>
+                                        <hr />
+                                        <p class="text-muted">
+                                          30-day money-back guarantee<br />
+                                          Free Shipping in U.S.<br />
+                                          Buy now, get in 2 days
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container mt32" t-if="product.alternative_product_ids">
+                                <h3>Alternative Products:</h3>
+                                <div class="row mt16" style="">
+                                    <t t-foreach="product.alternative_product_ids" t-as="alt_product">
+                                        <div class="col-md-2 thumbnail" style="width: 170px; height:130px; float:left; display:inline; margin-right: 10px; overflow:hidden;">
+                                            <div class="mt16 text-center" style="height: 100%;">
+                                                <div t-field="alt_product.image_small" t-options="{'widget': 'image', 'class': 'img-rounded shadow o_alternative_product' }" />
+                                                <h5>
+                                                    <a t-attf-href="/shop/product/#{ slug(alt_product) }" style="display: block">
+                                                        <span t-att-title="alt_product.name" t-field="alt_product.name" style="display: block;" />
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            <t t-set="head">
+                                <!-- Facebook and linkedin sharing data -->
+                                <meta property="og:type" content="website" />
+                                <meta property="og:url" t-att-content="request.httprequest.url" />
+                                <meta property="og:image" t-attf-content="#{request.httprequest.url_root}web/image/product.template/#{product.id}/image" />
+                                <meta property="og:description" t-att-content="product.description_sale" />
+                                <!--  Twitter sharing data -->
+                                <meta name="twitter:card" content="summary_large_image" />
+                                <meta name="twitter:site" t-attf-content="@#{res_company.name}" />
+                                <meta name="twitter:title" t-att-content="product.name" />
+                                <meta name="twitter:description" t-att-content="product.description_sale" />
+                                <meta name="twitter:image" t-attf-content="#{request.httprequest.url_root}web/image/product.template/#{product.id}/image" />
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </t>
+
+        </xpath>
+    </template>
+    <template id="products_item_extended" inherit_id="website_sale.products_item">
+        <xpath expr="//div[@class='product_price']" position="inside">
+            <button type="button" class="btn btn-xs"
+                    data-toggle="modal"
+                    style="background: transparent;"
+                    t-att-data-target="'#product_view'+str(product.id)">
+                    <i class="fa fa-search-plus" style="color: #337ab7;"/>
+            </button>
+        </xpath>
+    </template>
+
+    <template id="template_header_default4" inherit_id="website_sale.template_header_default">
+        <xpath expr="//header//nav//div//t[@t-call='website.placeholder_header_brand']" position="replace">
+            <h1></h1>
+
+        </xpath>
+    </template>
+    <template id="template_header_default2" inherit_id="website_sale.template_header_default">
+        <xpath expr="//header//nav" position="before">
+            <div class="header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm mx-auto">
+
+
+                            <t t-call="website_sale.pricelist_list">
+                                <t t-set="_classes" t-valuef="mt-2 ml-md-2"/>
+                            </t>
+
+
+                        </div>
+                        <div class="col-sm mx-auto">
+                            <div class="s_share no_icon_color" data-name="Social Media" style="text-align: center;">
+
+                                <t t-call="website.placeholder_header_brand">
+                                    <t t-set="_link_class" t-value="'mr-4'"/>
+                                </t>
+                            </div>
+                        </div>
+                        <div class=" col-sm mx-auto">
+                            <div style="text-align: right;">
+                                <div class="s_share no_icon_color">
+                                    <p style="margin-top:0;">
+                                        <a href="tel:+212644140000">
+                                            <i class="fa fa-phone m-1">
+                                                212644140000
+                                            </i>
+
+
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </xpath>
+    </template>
+
+
+</odoo>
